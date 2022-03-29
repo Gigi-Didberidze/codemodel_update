@@ -39,3 +39,8 @@ for i in items_testcase:
 
 with open('data_from_xml.json', 'w') as outfile:
     json.dump(json_converted, outfile)
+with open("target-function_test_suite-2a25b6c71caa743dc209.json", "r") as read_file:
+    data=json.load(read_file)
+    data.update(json_converted)
+    with open("final.json", "w") as final:
+        final.write(json.dumps(data))
