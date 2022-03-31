@@ -2,10 +2,10 @@ from xml.dom import minidom
 import json
 import shutil
 
-shutil.copyfile('../build/test/function_test_suite.xml', 'suiteinfo.xml')
-shutil.copyfile('../build/.cmake/api/v1/reply/target-function_test_suite-2a25b6c71caa743dc209.json', 'codemodel.json')
+shutil.copyfile('../build/test/function_test_suite.xml', 'inputs/suiteinfo.xml')
+shutil.copyfile('../build/.cmake/api/v1/reply/target-function_test_suite-2a25b6c71caa743dc209.json', 'inputs/codemodel.json')
 
-mydoc = minidom.parse('suiteinfo.xml')
+mydoc = minidom.parse('inputs/suiteinfo.xml')
 items = mydoc.getElementsByTagName('testsuite')
 print("name: " + items[0].attributes['name'].value)
 print("#tests: " + items[0].attributes['tests'].value)
@@ -19,7 +19,7 @@ for tcase in items_testcase:
     print(tcase.attributes['status'].value + " " + tcase.attributes['time'].value + " " + tcase.attributes['name'].value)
 
 json_converted = {}
-mydoc = minidom.parse('suiteinfo.xml')
+mydoc = minidom.parse('inputs/suiteinfo.xml')
 items = mydoc.getElementsByTagName('testsuite')
 items_testcase = mydoc.getElementsByTagName('testcase')
 
@@ -41,10 +41,10 @@ for i in items_testcase:
         'name': i.attributes['name'].value,
     })
 
-with open('data_from_xml.json', 'w') as outfile:
+with open('response/data_from_xml.json', 'w') as outfile:
     json.dump(json_converted, outfile)
-with open("codemodel.json", "r") as read_file:
+with open("inputs/codemodel.json", "r") as read_file:
     data=json.load(read_file)
     data.update(json_converted)
-    with open("final.json", "w") as final:
+    with open("response/final.json", "w") as final:
         final.write(json.dumps(data))
