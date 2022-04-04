@@ -1,9 +1,16 @@
 from xml.dom import minidom
 import json
 import shutil
+import os
 
 shutil.copyfile('../build/test/function_test_suite.xml', 'inputs/suiteinfo.xml')
-shutil.copyfile('../build/.cmake/api/v1/reply/target-function_test_suite-2a25b6c71caa743dc209.json', 'inputs/codemodel.json')
+
+directory = "../build/.cmake/api/v1/reply"
+substring = "function_test_suite"
+
+for filename in os.listdir(directory):
+    if substring in filename:
+        shutil.copyfile('../build/.cmake/api/v1/reply/'+filename, 'inputs/codemodel.json')
 
 mydoc = minidom.parse('inputs/suiteinfo.xml')
 items = mydoc.getElementsByTagName('testsuite')
